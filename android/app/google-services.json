@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "187243841812",
+    "project_id": "flutter-contact-app-60561",
+    "storage_bucket": "flutter-contact-app-60561.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187243841812:android:361cb6b91446d879451a01",
+        "android_client_info": {
+          "package_name": "ContactServicesApplication.contact_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187243841812-7j8fqarpjfhfq39ft55jor1o7e7bb98p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaJkETd3Q9fwrIfraTRKxmrvvFTlYmX6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187243841812-7j8fqarpjfhfq39ft55jor1o7e7bb98p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
