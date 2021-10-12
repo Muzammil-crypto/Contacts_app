@@ -1,12 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class AddContacts extends StatefulWidget {
+class EditContacts extends StatefulWidget {
+  String contactKey;
+  EditContacts({this.contactKey});
   @override
-  _AddContactsState createState() => _AddContactsState();
+  _EditContactsState createState() => _EditContactsState();
 }
 
-class _AddContactsState extends State<AddContacts> {
+class _EditContactsState extends State<EditContacts> {
   TextEditingController _nameController, _numberController;
   String _typeSelected = '';
   DatabaseReference _ref;
@@ -16,6 +18,7 @@ class _AddContactsState extends State<AddContacts> {
     _nameController = TextEditingController();
     _numberController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('Contacts');
+    getContactDetails();
   }
 
   Widget _buildContactType(String title) {
@@ -47,7 +50,7 @@ class _AddContactsState extends State<AddContacts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Save Contacts"),
+        title: Text("Edit Note"),
       ),
       body: Container(
         margin: EdgeInsets.all(15),
@@ -57,9 +60,9 @@ class _AddContactsState extends State<AddContacts> {
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: "Enter Name: ",
+                hintText: "Enter Title: ",
                 prefixIcon: Icon(
-                  Icons.account_circle,
+                  Icons.title_outlined,
                   size: 30,
                   color: Colors.blueGrey,
                 ),
@@ -74,9 +77,9 @@ class _AddContactsState extends State<AddContacts> {
             TextFormField(
               controller: _numberController,
               decoration: InputDecoration(
-                hintText: "Enter Number: ",
+                hintText: "Enter Description: ",
                 prefixIcon: Icon(
-                  Icons.phone_iphone,
+                  Icons.description_rounded,
                   size: 30,
                   color: Colors.blueGrey,
                 ),
@@ -95,7 +98,7 @@ class _AddContactsState extends State<AddContacts> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildContactType('Work'),
+                    _buildContactType('Event'),
                     SizedBox(width: 3),
                     _buildContactType('Family'),
                     SizedBox(width: 3),
@@ -115,7 +118,7 @@ class _AddContactsState extends State<AddContacts> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: RaisedButton(
                 child: Text(
-                  "Save Contact",
+                  "Save Changes",
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -133,15 +136,25 @@ class _AddContactsState extends State<AddContacts> {
     );
   }
 
+  getContactDetails() async {
+    DataSnapshot snapshot = await _ref.child(widget.contactKey).once();
+    Map contact = snapshot.value;
+    _nameController.text = contact['name'];
+    _numberController.text = contact['number'];
+    setState(() {
+      _typeSelected = contact['type'];
+    });
+  }
+
   void saveContact() {
     String name = _nameController.text;
     String number = _numberController.text;
     Map<String, String> contact = {
       'name': name,
-      'number': '+91' + number,
+      'number': number,
       'type': _typeSelected,
     };
-    _ref.push().set(contact).then((value) {
+    _ref.child(widget.contactKey).update(contact).then((value) {
       Navigator.pop(context);
     });
   }
